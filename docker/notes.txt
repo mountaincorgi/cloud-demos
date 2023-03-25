@@ -1,6 +1,10 @@
+#
+This demo shows how to build and run a container starting with basic Dockerfile instructions
+
 https://docs.docker.com/engine/reference/builder/
 
 
+#
 docker image ls
 docker container ls
 ...

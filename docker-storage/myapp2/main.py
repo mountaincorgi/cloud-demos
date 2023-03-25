@@ -8,8 +8,6 @@ app = Flask(__name__)
 
 # Create path to database (will be auto-created on connection if it 
 # doesn't exist)
-# We will use a VOLUME to persist this database
-# We will use a BIND MOUNT to persist the code base
 DATABASE = "/databases/myapp2.db"
 
 
@@ -19,6 +17,9 @@ def get_db():
     db = getattr(g, "_database", None)
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
+
+    # Return rows as tuples
+    db.row_factory = sqlite3.Row
     return db
 
 
@@ -37,22 +38,32 @@ def hello_world():
     return "Hello world!"
 
 
-@app.route("/get-all-flasks")
-def lab_equipment(lab_equipment_id):
-    """Get different types of flasks."""
-
-    if lab_equipment_id not in [1, 2, 3]:
-        return f"No lab equipment matches provided ID: {lab_equipment_id}"
-    else:
-        pass
+@app.route("/all-flasks")
+def all_flasks():
+    """Show all types of flasks in the database."""
+    db = get_db()
+    cur = db.execute("select * from flasks")
+    flasks = cur.fetchall()
+    return "<br>".join([f"<p>{flask['name']}</p>" for flask in flasks])
 
 
 @app.route("/add-flask", methods=["POST"])
 def add_flask():
-    """Add a new flask to our collection."""
+    """Add a new flask to our collection.
+    
+    Request body must be in the form {"name": <Flask Name>}
+    """
 
-    req = request
+    data = request.form
+    new_flask_name = data.get("name")
+    print(data)
+    print(new_flask_name)
+
     db = get_db()
+    cur = db.cursor()
+    cur.execute("INSERT INTO flasks (name) VALUES (?)", [f"{new_flask_name}",])
+    db.commit()
+    return "OK"
 
 
 if __name__ == "__main__":

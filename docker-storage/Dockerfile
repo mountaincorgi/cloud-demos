@@ -7,6 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR /myapp2
 
+# Keep requirements outside the app folder so not overwritten by bind-mount
 COPY requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
@@ -15,5 +16,3 @@ RUN pip install -r requirements.txt
 EXPOSE 5000
 
 CMD ["flask", "-A", "./main:app", "run", "--host", "0.0.0.0"]
-# CMD sleep infinity
-
