@@ -1,0 +1,12 @@
+https://docs.docker.com/engine/reference/builder/
+
+
+docker image ls
+docker container ls
+...
+
+docker build -t docker-demo .
+
+docker run -d (run as daemon)
+
+docker run -p 8000:8000 --name d-demo docker-demo

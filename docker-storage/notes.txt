@@ -1,0 +1,39 @@
+https://docs.docker.com/storage/
+
+Volumes are overall more useful in persisting data, completely managed by Docker and you can use the Docker CLI to manage your volumes. No permission issues.
+
+Volumes don't need to be associated with a particular container
+
+Volumes have better performance vs bind-mounts on Mac and Windows
+
+Volume drivers can be changed to point to the cloud rather than on the host
+
+Bind mounts are dependent on a file system existing on the host machine, so not flexible. Plus bind mounts can be a security risk as it's directly linked to the host file system so you have to be careful
+
+Bind mounts are useful for development environments, like devcontainers, where you can update code inside your container without needing to rebuild the image to run things
+
+Also they are useful when you need Docker and other services to access the same directory on the host machine (not really sure when you'd need this)
+
+
+# You're encouraged to use "--mount" because it's more explicit
+
+
+docker volume create
+docker volume ls
+docker volume rm
+docker container stop
+docker container start
+...
+
+docker build -t docker-storages-demo .
+
+docker run \
+    --mount type=bind,src=/Users/zhongfu/projects/demos/docker-storage/myapp2,dst=/myapp2 \
+    --mount type=volume,src=dstorages-demo-data,dst=/databases \
+    --name dstorages-demo \
+    -p 5000:5000 \
+    docker-storages-demo
+
+
+# Testing
+* Try making a new endpoint and re-running the container
