@@ -1,0 +1,32 @@
+#
+https://docs.docker.com/network/
+
+
+#
+Network driver types
+
+* bridge: default. Used when applications in standalone containers need to communicate running on the same host
+
+* host: use the Docker host's networking directly
+
+* overlay: connect multiple Docker daemons together, that may exist on different hosts. Swarm device --- standalone container, or 2 containers on different daemons
+
+* none: disable all networking
+
+* ipvlan/macvlan: gives you complete control over ipv4 / ipv6 addressing. Can be used when you need containers to LOOK like physical hosts on your network, with a unique MAC address
+
+A container automatically receives an IP address for each network it is added to
+The Docker serves as the DCHP server dynamically assigning IPs
+
+Proxy servers (explore later)
+
+
+#
+docker network ls
+docker network connect --ip / --ip6 (assign IPs)
+
+docker run --dns 
+Set one or more DNS serve addresses. Default to Google 8.8.8.8 for internet access
+
+docker run --hostname
+Set the hostname the container uses for itself. Defaults to the container ID
